@@ -5,27 +5,26 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { useRouter } from 'expo-router';
+import { FirebaseError } from 'firebase/app';
 
 export default function App() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const router = useRouter();
 
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, senha)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        console.log(user);
-        router.replace('/home');
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error(errorCode);
-        console.error(errorMessage);
-      });
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, senha);
+      // Signed in 
+      const user = userCredential.user;
+      console.log(user);
+      router.replace('/home');
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(errorCode);
+      console.error(errorMessage);
+    }
   }
 
   return (
