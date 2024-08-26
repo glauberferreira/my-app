@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { auth } from './../firebaseConfig';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from 'react';
@@ -22,10 +22,7 @@ export default function App() {
       console.log(user);
       router.replace('/home');
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error(errorCode);
-      console.error(errorMessage);
+      Alert.alert('Erro', error.message)
     } finally {
       setLoading(false);
     }
