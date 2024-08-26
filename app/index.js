@@ -4,7 +4,7 @@ import { auth } from './../firebaseConfig';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from 'react';
 import { TextInput } from 'react-native-paper';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { FirebaseError } from 'firebase/app';
 
 export default function App() {
@@ -31,8 +31,9 @@ export default function App() {
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
       <TextInput label="Email" value={email} onChangeText={setEmail} />
-      <TextInput label="Senha" value={senha} onChangeText={setSenha} />
+      <TextInput label="Senha" value={senha} onChangeText={setSenha} secureTextEntry={true} />
       <Button title='Login' onPress={handleLogin} />
+      <Link href='/cadastro'>Cadastrar</Link>
 
       <StatusBar style="auto" />
     </View>
