@@ -1,19 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { auth } from './../firebaseConfig';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from 'react';
-import { TextInput } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import { Link, useRouter } from 'expo-router';
 import { FirebaseError } from 'firebase/app';
 
 export default function App() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async () => {
     try {
+      setLoading(true);
       const userCredential = await signInWithEmailAndPassword(auth, email, senha);
       // Signed in 
       const user = userCredential.user;
@@ -24,15 +26,17 @@ export default function App() {
       const errorMessage = error.message;
       console.error(errorCode);
       console.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
-      <TextInput label="Email" value={email} onChangeText={setEmail} />
+      <TextInput label="Email" value={email} onChangeText={setEmail} keyboardType='email-address' />
       <TextInput label="Senha" value={senha} onChangeText={setSenha} secureTextEntry={true} />
-      <Button title='Login' onPress={handleLogin} />
+      <Button onPress={handleLogin} loading={isLoading}>Login</Button>
       <Link href='/cadastro'>Cadastrar</Link>
 
       <StatusBar style="auto" />
